@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hair By Pariz</title>
+</head>
+<body>
+    {% for price in prices %}
+        {{ price.service_price }}<br>
+        {{ price.product_name }}<br>
+        {{ price.hair_length }}<br>
+        {{ price.trim_included }}<br>
+        {{ price.colour_included }}<br>
+    {% endfor %}
+</body>
+</html>
