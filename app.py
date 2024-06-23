@@ -24,9 +24,27 @@ def get_prices():
     prices = mongo.db.prices.find()
     return render_template("prices.html", prices=prices)
 
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    return render_template("login.html")
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+        # check if email already exists in db
+        existing_user = mongo.db.email.find_one(
+            {"email": request.form.get("email").lower()})
+
+        if existing_user:
+            flash("E-mail already exists")
+            return redirect(url_for("register"))
+
+        register = {
+            "email": request.form.get("email").lower(),
+            "password": generate_password_hash(request.form.get("password"))
+        }
+        mongo.db.email.insert_one(register)
+
+        # put the new user into 'session' cookie
+        session["email"] = request.form.get("email").lower()
+        flash("Registration Successful!")
+    return render_template("register.html")
 
 
 if __name__ == "__main__":
